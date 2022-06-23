@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController } from '@ionic/angular';
+import { MovieService } from 'src/app/servies/movie.service';
 
 @Component({
   selector: 'app-movies',
@@ -6,10 +8,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./movies.page.scss'],
 })
 export class MoviesPage implements OnInit {
+  movies = [];
+  currentPage = 1;
 
-  constructor() { }
+  constructor(private movieService: MovieService, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
+    this.loadMovies();
+  }
+
+  async loadMovies() {
+    const loading = await this.loadingCtrl.create({
+      message:'loading ...',
+      spinner: 'bubbles',
+    });
+    await loading.present();
+    this.movieService.getTopRatedMovies(this.currentPage).subscribe(res => {
+      loading.dismiss();
+      this.movies = [...this.movies, ...res.results];
+      console.log(res);
+    })
   }
 
 }
