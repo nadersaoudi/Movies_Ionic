@@ -22,6 +22,6 @@ export class MovieService {
   }
 
   getMovieDetails(id: string) {
-    return this.http.get(`${environment.baseUrl}/movie/${id}&api_key=${environment.apiKey}`)
+    return this.http.get(`${environment.baseUrl}/movie/${id}?api_key=${environment.apiKey}`)
   }
 }
